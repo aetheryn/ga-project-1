@@ -2,11 +2,80 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width" , initial-scale="1.0" />
     <title>Twelve Piece Shogi/Twelve Janggi</title>
-    <style src="style.css"></style>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <link rel="stylesheet" href="style.css" />
   </head>
   <body>
+    <div class="row g-3 gx-3" id="container">
+      <div class="text-center col-12" id="game-title">
+        Twelve Piece Shogi/Twelve Janggi
+      </div>
+      <div class="col-3 g-5" id="player-one">
+        <div class="player-name">Player One</div>
+        <div class="your-turn">It's your turn now.</div>
+        <div class="capture-reserve-text">You have captured:</div>
+        <div class="capture-reserve" id="player-one">
+          <div class="capture-grid col">
+            <div class="capture-tiles"></div>
+          </div>
+          <div class="capture-grid col">
+            <div class="capture-tiles"></div>
+          </div>
+          <div class="capture-grid col">
+            <div class="capture-tiles"></div>
+          </div>
+          <div class="capture-grid col"></div>
+          <div class="capture-grid col"></div>
+          <div class="capture-grid col"></div>
+        </div>
+      </div>
+      <div class="col" id="game-area">
+        <div class="row cols-3 justify-content-center">
+          <div class="solid-black squares" id="square1">
+            <div class="tiles">tile1</div>
+          </div>
+          <div class="solid-black squares" id="square2">square2</div>
+          <div class="solid-black squares" id="square3">square3</div>
+          <div class="solid-black squares" id="square4">square4</div>
+        </div>
+        <div class="row cols-3 justify-content-center">
+          <div class="solid-black squares" id="square5">square5</div>
+          <div class="solid-black squares" id="square6">square6</div>
+          <div class="solid-black squares" id="square7">square7</div>
+          <div class="solid-black squares" id="square8">square8</div>
+        </div>
+        <div class="row cols-3 justify-content-center">
+          <div class="solid-black squares" id="square9">square9</div>
+          <div class="solid-black squares" id="square10">square10</div>
+          <div class="solid-black squares" id="square11">square11</div>
+          <div class="solid-black squares" id="square12">square12</div>
+        </div>
+      </div>
+      <div class="col-3 g-5" id="player-two">
+        <div class="player-name">Player Two</div>
+        <div class="your-turn">It's your turn now.</div>
+        <div class="capture-reserve-text">You have captured:</div>
+        <div class="capture-reserve">
+          <div class="capture-grid col">
+            <div class="capture-tiles"></div>
+          </div>
+          <div class="capture-grid col">
+            <div class="capture-tiles"></div>
+          </div>
+          <div class="capture-grid col"></div>
+          <div class="capture-grid col"></div>
+          <div class="capture-grid col"></div>
+          <div class="capture-grid col"></div>
+        </div>
+      </div>
+    </div>
     <script src="script.js"></script>
   </body>
 </html>
