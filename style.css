@@ -65,15 +65,13 @@
   justify-content: center;
 }
 
-.grid {
-  align-items: center;
-  justify-content: center;
-}
-
 .squares {
   display: flex;
+  flex-wrap: wrap;
   height: 150px;
   width: 150px;
+  background-color: gray;
+  border: 1px solid black;
   align-items: center;
   justify-content: center;
 }
@@ -84,6 +82,21 @@
   width: 125px;
   text-align: center;
   border: black solid 2px;
+  background-color: pink;
   align-items: center;
   justify-content: center;
+}
+
+.player1 {
+  background-color: white;
+  border: black 5px solid;
+  border-radius: 10%;
+  color: black;
+}
+
+.player2 {
+  background-color: black;
+  border: white 5px solid;
+  border-radius: 10%;
+  color: white;
 }
