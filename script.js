@@ -21,221 +21,111 @@ const grid = [
 
 const pieceNames = ["king", "man", "general", "minister"];
 const players = ["player1", "player2"];
-
-// Switching players //
-let playerTurn = "player1";
-let playerIndex = 1;
+let playerTurn = players[0];
 
 // Set starting pieces //
 function setPieces() {
   for (let i = 0; i < pieceNames.length; i++) {
-    const piece = document.createElement("div");
-    piece.innerText = pieceNames[i];
-    piece.classList.add("tiles", `${pieceNames[i]}`);
+    for (let j = 0; j < players.length; j++) {
+      const piece = document.createElement("div");
+      piece.innerText = pieceNames[i];
+      piece.classList.add("tiles", `${pieceNames[i]}`, `${players[j]}`);
 
-    if (pieceNames[i] == "minister") {
-      piece.classList.add(`${players[0]}`);
-      grid[0][0].append(piece);
-    } else if (pieceNames[i] == "king") {
-      piece.classList.add(`${players[0]}`);
-      grid[1][0].append(piece);
-    } else if (pieceNames[i] == "man") {
-      piece.classList.add(`${players[0]}`);
-      grid[1][1].append(piece);
-    } else if (pieceNames[i] == "general") {
-      piece.classList.add(`${players[0]}`);
-      grid[2][0].append(piece);
-    }
-
-    const pieceOpp = document.createElement("div");
-    pieceOpp.innerText = pieceNames[i];
-    pieceOpp.classList.add("tiles", `${pieceNames[i]}`);
-
-    if (pieceNames[i] == "minister") {
-      pieceOpp.classList.add(`${players[1]}`);
-      grid[2][3].append(pieceOpp);
-    } else if (pieceNames[i] == "king") {
-      pieceOpp.classList.add(`${players[1]}`);
-      grid[1][3].append(pieceOpp);
-    } else if (pieceNames[i] == "man") {
-      pieceOpp.classList.add(`${players[1]}`);
-      grid[1][2].append(pieceOpp);
-    } else if (pieceNames[i] == "general") {
-      pieceOpp.classList.add(`${players[1]}`);
-      grid[0][3].append(pieceOpp);
+      switch (pieceNames[i]) {
+        case "minister":
+          if (players[j] == "player1") {
+            grid[0][0].append(piece);
+          } else {
+            grid[2][3].append(piece);
+          }
+          break;
+        case "king":
+          if (players[j] == "player1") {
+            grid[1][0].append(piece);
+          } else {
+            grid[1][3].append(piece);
+          }
+          break;
+        case "man":
+          if (players[j] == "player1") {
+            grid[1][1].append(piece);
+          } else {
+            grid[1][2].append(piece);
+          }
+          break;
+        case "general":
+          if (players[j] == "player1") {
+            grid[2][0].append(piece);
+          } else {
+            grid[0][3].append(piece);
+          }
+          break;
+        default:
+          break;
+      }
     }
   }
 }
 
 setPieces();
 
-let piecePossession = "player1";
-let pieceName = pieceNames[0];
-let movingPiece = document.querySelector(".tiles");
+let selectedPiece;
 
-// // Listen to clicked piece on grid - ONE //
-// function selectPiece(cb) {
-//   const tileArray = document.querySelectorAll(".tiles");
-//   tileArray.forEach((clickedPiece) => {
-//     clickedPiece.addEventListener("click", function (e) {
-//       console.log(e.target.classList);
-//       if (e.target.classList[2] == playerTurn) {
-//         piecePossession = e.target.classList[2]; // register piece possession
-//         pieceName = e.target.classList[1];
-//         oldTile = e.target;
-//         console.log(
-//           `${pieceName} of ${piecePossession}, where are you moving to?`
-//         );
-//         cb();
-//         // make conditional if piece is allowed to move to the next direction //
-//       } else {
-//         console.log("This is not your piece!");
-//       }
-//     });
-//   });
-// }
-
-// // Moving to clicked square on grid - ONE //
-// function selectDestination(cb) {
-//   const gridArray = document.querySelectorAll(".squares");
-//   gridArray.forEach((clickedSquare) => {
-//     clickedSquare.addEventListener("click", function (e) {
-//       if (!e.currentTarget.hasChildNodes()) {
-//         // + If square is an allowed movement for the read piece //
-//         console.log("Hi, I'm moving here!");
-//         cb();
-//         const newTile = document.createElement("div");
-//         newTile.classList.add("tiles", `${pieceName}`, `${piecePossession}`);
-//         newTile.innerText = pieceName;
-//         e.currentTarget.append(newTile);
-//       }
-//       // If square has opponent's tile => capture function
-//       // If square has same player's tile => you cannot move here
-//     });
-//   });
-//   playerIndex = playerIndex * -1;
-//   console.log(playerIndex);
-//   if (playerIndex === 1) {
-//     playerTurn = players[0];
-//   } else {
-//     playerTurn = players[1];
-//   }
-// }
-
-// // Listening to clicked piece - TWO //
-// function selectPiece(cb) {
-//   const tileArray = document.querySelectorAll(".tiles");
-//   tileArray.forEach((clickedPiece) => {
-//     clickedPiece.addEventListener("click", function (e) {
-//       console.log(e.target.classList);
-//       if (e.target.classList[2] == playerTurn) {
-//         // make conditional if piece is allowed to move to the next direction //
-//         let movingPiece = e.currentTarget.cloneNode(true);
-//         const gridArray = document.querySelectorAll(".squares");
-//         gridArray.forEach((clickedSquare) => {
-//           clickedSquare.addEventListener("click", function (e) {
-//             if (!e.currentTarget.hasChildNodes()) {
-//               // + If square is an allowed movement for the read piece //
-//               console.log("Hi, I'm moving here!");
-//               e.currentTarget.append(movingPiece);
-//               console.log(this.currentTarget);
-//             }
-//           });
-//         });
-//       } else {
-//         console.log("This is not your piece!");
-//       }
-//     });
-//   });
-// }
-
-// // Moving to clicked square on grid - TWO //
-// function selectDestination(cb) {
-//   const gridArray = document.querySelectorAll(".squares");
-//   gridArray.forEach((clickedSquare) => {
-//     clickedSquare.addEventListener("click", function (e) {
-//       if (!e.currentTarget.hasChildNodes()) {
-//         // + If square is an allowed movement for the read piece //
-//         console.log("Hi, I'm moving here!");
-//         e.currentTarget.append(movingPiece);
-//         cb();
-//       }
-//       // If square has opponent's tile => capture function
-//       // If square has same player's tile => you cannot move here
-//     });
-//   });
-//   playerIndex = playerIndex * -1;
-//   console.log(playerIndex);
-//   if (playerIndex === 1) {
-//     playerTurn = players[0];
-//   } else {
-//     playerTurn = players[1];
-//   }
-// }
-
-// // Remove tile from old position //
-// function deleteOldTile(cb) {
-//   if (oldTile.parentNode) {
-//     oldTile.parentNode.removeChild(oldTile);
-//   }
-//   cb();
-// }
-
-// Set allowable movements //
-
-// selectPiece(() =>
-//   selectDestination(() =>
-//     deleteOldTile(() => console.log(`This is ${playerTurn}`))
-//   )
-// );
-
-// selectPiece();
-
-// Listening to clicked piece - THREE //
-function selectPiece(cbFn) {
-  const tileArray = document.querySelectorAll(".tiles");
-  tileArray.forEach((clickedPiece) => {
-    clickedPiece.addEventListener("click", function (e) {
-      console.log(e.target.classList);
-      if (e.target.classList[2] == playerTurn) {
-        // make conditional if piece is allowed to move to the next direction //
-        movingPiece = e.currentTarget;
-        cbFn();
-      } else {
-        console.log("This is not your piece!");
+// Setting Event Listener //
+const gridArray = document.querySelectorAll(".squares");
+gridArray.forEach((clickedSquare) => {
+  clickedSquare.addEventListener("click", function (e) {
+    if (!selectedPiece) {
+      if (e.currentTarget.firstChild.classList.contains(playerTurn)) {
+        selectPiece(e.currentTarget.firstChild);
       }
-    });
-  });
-}
-
-function selectDestination(cbFn) {
-  const gridArray = document.querySelectorAll(".squares");
-  gridArray.forEach((clickedSquare) => {
-    clickedSquare.addEventListener("click", function (e) {
+    } else {
+      // everything will still go haywire if we click on our own tile LMAO
       if (!e.currentTarget.hasChildNodes()) {
-        // + If square is an allowed movement for the read piece //
-        console.log("Hi, I'm moving here!");
-        e.currentTarget.append(movingPiece);
-        cbFn();
+        checkAllowableMoves(e.currentTarget, selectedPiece);
+        e.currentTarget.append(selectedPiece);
+        switchPlayer();
+      } else {
+        capturePiece(e.currentTarget);
+        e.currentTarget.append(selectedPiece);
+        switchPlayer();
       }
-    });
+    }
   });
+});
+
+// Update Selected Piece //
+function selectPiece(piece) {
+  selectedPiece = piece;
+  console.log(selectedPiece);
 }
 
-// Change Players //
-function changePlayer(cbFn) {
-  playerIndex = playerIndex * -1;
-  console.log(playerIndex);
-  if (playerIndex === 1) {
-    playerTurn = players[0];
-  } else {
+// Switch Player //
+function switchPlayer() {
+  if (playerTurn == players[0]) {
     playerTurn = players[1];
+  } else {
+    playerTurn = players[0];
   }
-  cbFn();
+  selectedPiece = null;
+  console.log(`Next is ${playerTurn}'s turn.`);
 }
 
-selectPiece(() =>
-  selectDestination(() =>
-    changePlayer(() => console.log(`This is ${playerTurn}'s turn.`))
-  )
-);
+// Capture Piece //
+function capturePiece(square) {
+  const capturedPiece = square.firstChild;
+  capturedPiece.classList.add("capture-tiles");
+  if (playerTurn == players[0]) {
+    capturedPiece.classList.replace("player2", "player1");
+    document.querySelector(".capture-reserve#player-one").append(capturedPiece);
+  } else {
+    capturedPiece.classList.replace("player1", "player2");
+    document.querySelector(".capture-reserve#player-two").append(capturedPiece);
+  }
+}
+
+// Check Allowable Moves //
+function checkAllowableMoves(square, piece) {
+  console.log(piece.classList[1]);
+  console.log(square.id);
+}

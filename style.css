@@ -37,6 +37,41 @@
   font-weight: 600;
   margin-top: 2em;
 }
+
+.squares {
+  display: flex;
+  flex-wrap: wrap;
+  height: 150px;
+  width: 150px;
+  background-color: gray;
+  border: 1px solid black;
+  align-items: center;
+  justify-content: center;
+}
+
+.tiles {
+  display: flex;
+  height: 125px;
+  width: 125px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.player1 {
+  background-color: white;
+  border: black 5px solid;
+  border-radius: 10%;
+  color: black;
+}
+
+.player2 {
+  background-color: black;
+  border: white 5px solid;
+  border-radius: 10%;
+  color: white;
+}
+
 .capture-reserve {
   display: flex;
   width: 50px;
@@ -59,44 +94,8 @@
   display: flex;
   height: 45px;
   width: 45px;
-  text-align: center;
-  border: black solid 1.5px;
+  border-width: 2px;
+  font-size: 0.7rem;
   align-items: center;
   justify-content: center;
-}
-
-.squares {
-  display: flex;
-  flex-wrap: wrap;
-  height: 150px;
-  width: 150px;
-  background-color: gray;
-  border: 1px solid black;
-  align-items: center;
-  justify-content: center;
-}
-
-.tiles {
-  display: flex;
-  height: 125px;
-  width: 125px;
-  text-align: center;
-  border: black solid 2px;
-  background-color: pink;
-  align-items: center;
-  justify-content: center;
-}
-
-.player1 {
-  background-color: white;
-  border: black 5px solid;
-  border-radius: 10%;
-  color: black;
-}
-
-.player2 {
-  background-color: black;
-  border: white 5px solid;
-  border-radius: 10%;
-  color: white;
 }
