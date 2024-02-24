@@ -19,13 +19,13 @@ const grid = [
   ],
 ];
 
-const pieceNames = ["king", "man", "general", "minister"];
+const pieceNames = ["king", "man", "general", "minister", "feudal-lord"];
 const players = ["player1", "player2"];
 let playerTurn = players[0];
 
 // Set starting pieces //
 function setPieces() {
-  for (let i = 0; i < pieceNames.length; i++) {
+  for (let i = 0; i < pieceNames.length - 1; i++) {
     for (let j = 0; j < players.length; j++) {
       const piece = document.createElement("div");
       piece.innerText = pieceNames[i];
@@ -70,6 +70,10 @@ function setPieces() {
 setPieces();
 
 let selectedPiece;
+let pieceRow;
+let pieceColumn;
+let destinationRow;
+let destinationColumn;
 
 // Setting Event Listener //
 const gridArray = document.querySelectorAll(".squares");
@@ -80,15 +84,23 @@ gridArray.forEach((clickedSquare) => {
         selectPiece(e.currentTarget.firstChild);
       }
     } else {
-      // everything will still go haywire if we click on our own tile LMAO
       if (!e.currentTarget.hasChildNodes()) {
-        checkAllowableMoves(e.currentTarget, selectedPiece);
-        e.currentTarget.append(selectedPiece);
-        switchPlayer();
+        if (checkAllowableMoves(e.currentTarget, selectedPiece)) {
+          e.currentTarget.append(selectedPiece);
+          switchPlayer();
+        }
       } else {
-        capturePiece(e.currentTarget);
-        e.currentTarget.append(selectedPiece);
-        switchPlayer();
+        if (
+          checkAllowableMoves(e.currentTarget, selectedPiece) &&
+          e.currentTarget.firstChild.classList[2] !== playerTurn
+        ) {
+          capturePiece(e.currentTarget);
+          e.currentTarget.append(selectedPiece);
+          switchPlayer();
+        } else {
+          selectedPiece = null;
+          console.log(selectedPiece);
+        }
       }
     }
   });
@@ -96,8 +108,17 @@ gridArray.forEach((clickedSquare) => {
 
 // Update Selected Piece //
 function selectPiece(piece) {
+  console.log(piece.parentNode.id);
+
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < 4; j++)
+      if (grid[i][j] === document.querySelector(`#${piece.parentNode.id}`)) {
+        pieceRow = i;
+        pieceColumn = j;
+      }
+  }
   selectedPiece = piece;
-  console.log(selectedPiece);
+  console.log(selectedPiece, pieceRow, pieceColumn);
 }
 
 // Switch Player //
@@ -126,6 +147,129 @@ function capturePiece(square) {
 
 // Check Allowable Moves //
 function checkAllowableMoves(square, piece) {
-  console.log(piece.classList[1]);
-  console.log(square.id);
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < 4; j++)
+      if (grid[i][j] === document.querySelector(`#${square.id}`)) {
+        destinationRow = i;
+        destinationColumn = j;
+      }
+  }
+
+  console.log(piece.classList[1], square.id, destinationRow, destinationColumn);
+
+  switch (piece.classList[1]) {
+    case "general":
+      if (
+        (destinationRow == pieceRow &&
+          (destinationColumn == pieceColumn + 1 ||
+            destinationColumn == pieceColumn - 1)) ||
+        (destinationColumn == pieceColumn &&
+          (destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1))
+      ) {
+        console.log("Move successful.");
+        return true;
+      } else {
+        selectedPiece = null;
+      }
+      break;
+
+    case "minister":
+      if (
+        (destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1) &&
+        (destinationColumn == pieceColumn + 1 ||
+          destinationColumn == pieceColumn - 1)
+      ) {
+        console.log("Move successful.");
+        return true;
+      } else {
+        selectedPiece = null;
+      }
+      break;
+
+    case "man":
+      if (
+        piece.classList[2] == "player1" &&
+        destinationRow == pieceRow &&
+        destinationColumn == pieceColumn + 1
+      ) {
+        console.log("Move successful.");
+        return true;
+      } else if (
+        piece.classList[2] == "player2" &&
+        destinationRow == pieceRow &&
+        destinationColumn == pieceColumn - 1
+      ) {
+        console.log("Move successful.");
+        return true;
+      } else {
+        selectedPiece = null;
+      }
+      break;
+
+    case "king":
+      if (
+        (destinationRow == pieceRow &&
+          (destinationColumn == pieceColumn + 1 ||
+            destinationColumn == pieceColumn - 1)) ||
+        (destinationColumn == pieceColumn &&
+          (destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1)) ||
+        ((destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1) &&
+          (destinationColumn == pieceColumn + 1 ||
+            destinationColumn == pieceColumn - 1))
+      ) {
+        console.log("Move successful.");
+        return true;
+      } else {
+        selectedPiece = null;
+      }
+      break;
+
+    case "feudal-lord":
+      if (piece.classList[2] == "player1") {
+        if (
+          (destinationRow == pieceRow &&
+            (destinationColumn == pieceColumn + 1 ||
+              destinationColumn == pieceColumn - 1)) ||
+          (destinationColumn == pieceColumn &&
+            (destinationRow == pieceRow + 1 ||
+              destinationRow == pieceRow - 1)) ||
+          ((destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1) &&
+            destinationColumn == pieceColumn + 1)
+        ) {
+          console.log("Move successful.");
+          return true;
+        }
+      } else if (piece.classList[2] == "player2") {
+        if (
+          (destinationRow == pieceRow &&
+            (destinationColumn == pieceColumn + 1 ||
+              destinationColumn == pieceColumn - 1)) ||
+          (destinationColumn == pieceColumn &&
+            (destinationRow == pieceRow + 1 ||
+              destinationRow == pieceRow - 1)) ||
+          ((destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1) &&
+            destinationColumn == pieceColumn - 1)
+        ) {
+          console.log("Move successful.");
+          return true;
+        }
+      } else {
+        selectedPiece = null;
+      }
+      break;
+
+    default:
+      break;
+  }
 }
+
+// Check Whether Man Reaches Opponent's Territory //
+// Check Game End //
+// Start Move from Capture System //
+
+// Image Overlay to CSS //
+// Color Overlay IF POSSIBLE //
+// Adjust 'It's your Turn Now punya Opacity //
+// Clickable Mouse? //
+// Randomiser on who starts the game //
+// Countdown Timer //
