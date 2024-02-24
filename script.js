@@ -87,7 +87,10 @@ gridArray.forEach((clickedSquare) => {
       if (!e.currentTarget.hasChildNodes()) {
         if (checkAllowableMoves(e.currentTarget, selectedPiece)) {
           e.currentTarget.append(selectedPiece);
-          switchPlayer();
+          isManInTerr();
+          if (!hasGameEnded()) {
+            switchPlayer();
+          }
         }
       } else {
         if (
@@ -96,7 +99,10 @@ gridArray.forEach((clickedSquare) => {
         ) {
           capturePiece(e.currentTarget);
           e.currentTarget.append(selectedPiece);
-          switchPlayer();
+          isManInTerr();
+          if (!hasGameEnded()) {
+            switchPlayer();
+          }
         } else {
           selectedPiece = null;
           console.log(selectedPiece);
@@ -111,11 +117,12 @@ function selectPiece(piece) {
   console.log(piece.parentNode.id);
 
   for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < 4; j++)
+    for (let j = 0; j < 4; j++) {
       if (grid[i][j] === document.querySelector(`#${piece.parentNode.id}`)) {
         pieceRow = i;
         pieceColumn = j;
       }
+    }
   }
   selectedPiece = piece;
   console.log(selectedPiece, pieceRow, pieceColumn);
@@ -135,7 +142,15 @@ function switchPlayer() {
 // Capture Piece //
 function capturePiece(square) {
   const capturedPiece = square.firstChild;
+
+  // Special for Feudal Lord //
+  if (capturedPiece.classList.contains("feudal-lord")) {
+    capturedPiece.classList.replace("feudal-lord", "man");
+    capturedPiece.innerText = "man";
+  }
+
   capturedPiece.classList.add("capture-tiles");
+
   if (playerTurn == players[0]) {
     capturedPiece.classList.replace("player2", "player1");
     document.querySelector(".capture-reserve#player-one").append(capturedPiece);
@@ -148,11 +163,12 @@ function capturePiece(square) {
 // Check Allowable Moves //
 function checkAllowableMoves(square, piece) {
   for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < 4; j++)
+    for (let j = 0; j < 4; j++) {
       if (grid[i][j] === document.querySelector(`#${square.id}`)) {
         destinationRow = i;
         destinationColumn = j;
       }
+    }
   }
 
   console.log(piece.classList[1], square.id, destinationRow, destinationColumn);
@@ -238,6 +254,8 @@ function checkAllowableMoves(square, piece) {
         ) {
           console.log("Move successful.");
           return true;
+        } else {
+          selectedPiece = null;
         }
       } else if (piece.classList[2] == "player2") {
         if (
@@ -252,9 +270,9 @@ function checkAllowableMoves(square, piece) {
         ) {
           console.log("Move successful.");
           return true;
+        } else {
+          selectedPiece = null;
         }
-      } else {
-        selectedPiece = null;
       }
       break;
 
@@ -263,13 +281,53 @@ function checkAllowableMoves(square, piece) {
   }
 }
 
+// Check whether Game has Ended //
+function hasGameEnded() {
+  let numberOfKings = 0;
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (grid[i][j].hasChildNodes()) {
+        if (grid[i][j].firstChild.classList.contains("king")) {
+          numberOfKings++;
+        }
+      }
+    }
+  }
+  if (numberOfKings == 2) {
+    return false;
+  } else {
+    alert(`${playerTurn} has won the game!`);
+    return true;
+  }
+}
+
 // Check Whether Man Reaches Opponent's Territory //
-// Check Game End //
+function isManInTerr() {
+  for (let i = 0; i < grid.length; i++) {
+    if (
+      (grid[i][0].hasChildNodes() &&
+        grid[i][0].firstChild.matches(".man.player2")) ||
+      (grid[i][3].hasChildNodes() &&
+        grid[i][3].firstChild.matches(".man.player1"))
+    ) {
+      manUpgrades(selectedPiece);
+    }
+  }
+}
+
+// Man Upgrades to Feudal Lord //
+function manUpgrades(piece) {
+  piece.classList.replace("man", "feudal-lord");
+  piece.innerText = "feudal lord";
+  console.log(piece);
+}
+
+// =========== //
 // Start Move from Capture System //
 
 // Image Overlay to CSS //
 // Color Overlay IF POSSIBLE //
-// Adjust 'It's your Turn Now punya Opacity //
+// Adjust 'It's your Turn Now''s Opacity //
 // Clickable Mouse? //
 // Randomiser on who starts the game //
 // Countdown Timer //
