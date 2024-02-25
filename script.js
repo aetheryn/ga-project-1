@@ -104,7 +104,7 @@ gridArray.forEach((clickedSquare) => {
             switchPlayer();
           }
         } else {
-          selectedPiece = null;
+          deselectPiece();
           console.log(selectedPiece);
         }
       }
@@ -125,17 +125,27 @@ function selectPiece(piece) {
     }
   }
   selectedPiece = piece;
+  selectedPiece.classList.add("clickedtile");
   console.log(selectedPiece, pieceRow, pieceColumn);
+}
+
+function deselectPiece() {
+  selectedPiece.classList.remove("clickedtile");
+  selectedPiece = null;
 }
 
 // Switch Player //
 function switchPlayer() {
   if (playerTurn == players[0]) {
     playerTurn = players[1];
+    document.querySelector("#player-one >.your-turn").style.opacity = 0;
+    document.querySelector("#player-two >.your-turn").style.opacity = 1;
   } else {
     playerTurn = players[0];
+    document.querySelector("#player-one >.your-turn").style.opacity = 1;
+    document.querySelector("#player-two >.your-turn").style.opacity = 0;
   }
-  selectedPiece = null;
+  deselectPiece();
   console.log(`Next is ${playerTurn}'s turn.`);
 }
 
@@ -153,10 +163,14 @@ function capturePiece(square) {
 
   if (playerTurn == players[0]) {
     capturedPiece.classList.replace("player2", "player1");
-    document.querySelector(".capture-reserve#player-one").append(capturedPiece);
+    document
+      .querySelector("#player-one >.capture-reserve")
+      .append(capturedPiece);
   } else {
     capturedPiece.classList.replace("player1", "player2");
-    document.querySelector(".capture-reserve#player-two").append(capturedPiece);
+    document
+      .querySelector("#player-two >.capture-reserve")
+      .append(capturedPiece);
   }
 }
 
@@ -185,7 +199,7 @@ function checkAllowableMoves(square, piece) {
         console.log("Move successful.");
         return true;
       } else {
-        selectedPiece = null;
+        deselectPiece();
       }
       break;
 
@@ -198,7 +212,7 @@ function checkAllowableMoves(square, piece) {
         console.log("Move successful.");
         return true;
       } else {
-        selectedPiece = null;
+        deselectPiece();
       }
       break;
 
@@ -218,7 +232,7 @@ function checkAllowableMoves(square, piece) {
         console.log("Move successful.");
         return true;
       } else {
-        selectedPiece = null;
+        deselectPiece();
       }
       break;
 
@@ -236,7 +250,7 @@ function checkAllowableMoves(square, piece) {
         console.log("Move successful.");
         return true;
       } else {
-        selectedPiece = null;
+        deselectPiece;
       }
       break;
 
@@ -255,7 +269,7 @@ function checkAllowableMoves(square, piece) {
           console.log("Move successful.");
           return true;
         } else {
-          selectedPiece = null;
+          deselectPiece();
         }
       } else if (piece.classList[2] == "player2") {
         if (
@@ -271,7 +285,7 @@ function checkAllowableMoves(square, piece) {
           console.log("Move successful.");
           return true;
         } else {
-          selectedPiece = null;
+          deselectPiece();
         }
       }
       break;
@@ -327,7 +341,6 @@ function manUpgrades(piece) {
 
 // Image Overlay to CSS //
 // Color Overlay IF POSSIBLE //
-// Adjust 'It's your Turn Now''s Opacity //
 // Clickable Mouse? //
 // Randomiser on who starts the game //
 // Countdown Timer //

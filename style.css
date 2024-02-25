@@ -1,5 +1,7 @@
 #container {
   padding: 2em 3em;
+  background-image: url("https://i.pngimg.me/thumb/f/720/comrawpixel7524860.jpg");
+  background-size: cover;
 }
 
 .solid-black {
@@ -29,8 +31,28 @@
   font-weight: 700;
 }
 
+.player-one-text {
+  background-color: white;
+  border: 3px solid black;
+  border-radius: 10px;
+  padding: 0.3rem 0.3rem;
+  color: black;
+}
+
+.player-two-text {
+  background-color: black;
+  border: 3px solid white;
+  border-radius: 10px;
+  padding: 0.3rem 0.3rem;
+  color: white;
+}
+
 .your-turn {
   font-size: 1rem;
+  font-weight: 500;
+  color: red;
+  opacity: 0;
+  margin: 0.2rem 0.2rem;
 }
 
 .capture-reserve-text {
@@ -98,4 +120,8 @@
   font-size: 0.7rem;
   align-items: center;
   justify-content: center;
+}
+
+.clickedtile {
+  border-color: red;
 }
