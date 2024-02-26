@@ -68,7 +68,7 @@ function setPieces() {
 }
 
 setPieces();
-
+let playerID;
 let selectedPiece;
 let pieceRow;
 let pieceColumn;
@@ -76,15 +76,32 @@ let destinationRow;
 let destinationColumn;
 
 // Setting Event Listener //
+
 const gridArray = document.querySelectorAll(".squares");
 gridArray.forEach((clickedSquare) => {
   clickedSquare.addEventListener("click", function (e) {
     if (!selectedPiece) {
       if (e.currentTarget.firstChild.classList.contains(playerTurn)) {
         selectPiece(e.currentTarget.firstChild);
+        console.log(selectedPiece);
       }
     } else {
-      if (!e.currentTarget.hasChildNodes()) {
+      if (
+        selectedPiece.classList.contains("capture-tiles") &&
+        !e.currentTarget.hasChildNodes()
+      ) {
+        if (placingCaptured(e.currentTarget)) {
+          if (!hasGameEnded()) {
+            switchPlayer();
+          }
+        } else {
+          deselectPiece();
+          console.log("Here.");
+        }
+      } else if (
+        !selectedPiece.classList.contains("capture-tiles") &&
+        !e.currentTarget.hasChildNodes()
+      ) {
         if (checkAllowableMoves(e.currentTarget, selectedPiece)) {
           e.currentTarget.append(selectedPiece);
           isManInTerr();
@@ -92,7 +109,8 @@ gridArray.forEach((clickedSquare) => {
             switchPlayer();
           }
         }
-      } else {
+      } else if (e.currentTarget.hasChildNodes()) {
+        console.log("restored tile");
         if (
           checkAllowableMoves(e.currentTarget, selectedPiece) &&
           e.currentTarget.firstChild.classList[2] !== playerTurn
@@ -105,7 +123,7 @@ gridArray.forEach((clickedSquare) => {
           }
         } else {
           deselectPiece();
-          console.log(selectedPiece);
+          console.log("Here.");
         }
       }
     }
@@ -115,6 +133,7 @@ gridArray.forEach((clickedSquare) => {
 // Update Selected Piece //
 function selectPiece(piece) {
   console.log(piece.parentNode.id);
+  console.log(piece);
 
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < 4; j++) {
@@ -125,13 +144,17 @@ function selectPiece(piece) {
     }
   }
   selectedPiece = piece;
+  console.log(selectedPiece);
   selectedPiece.classList.add("clickedtile");
   console.log(selectedPiece, pieceRow, pieceColumn);
 }
 
 function deselectPiece() {
+  console.log(selectedPiece.classList);
   selectedPiece.classList.remove("clickedtile");
+  console.log(selectedPiece.classList);
   selectedPiece = null;
+  console.log("Selected piece: " + selectedPiece);
 }
 
 // Switch Player //
@@ -146,7 +169,22 @@ function switchPlayer() {
     document.querySelector("#player-two >.your-turn").style.opacity = 0;
   }
   deselectPiece();
+  console.log("Here.");
   console.log(`Next is ${playerTurn}'s turn.`);
+
+  //   Check Possibility of Next Player Starting from Captured Tile //
+  if (playerTurn == players[0]) {
+    playerID = "player-one";
+  } else {
+    playerID = "player-two";
+  }
+
+  if (
+    document.querySelector(`#${playerID} >.capture-reserve`).hasChildNodes()
+  ) {
+    fromCapturedTiles();
+    console.log(document.querySelector(`#${playerID} >.capture-reserve`));
+  }
 }
 
 // Capture Piece //
@@ -200,6 +238,7 @@ function checkAllowableMoves(square, piece) {
         return true;
       } else {
         deselectPiece();
+        console.log("Here.");
       }
       break;
 
@@ -213,6 +252,7 @@ function checkAllowableMoves(square, piece) {
         return true;
       } else {
         deselectPiece();
+        console.log("Here.");
       }
       break;
 
@@ -233,6 +273,7 @@ function checkAllowableMoves(square, piece) {
         return true;
       } else {
         deselectPiece();
+        console.log("Here.");
       }
       break;
 
@@ -251,6 +292,7 @@ function checkAllowableMoves(square, piece) {
         return true;
       } else {
         deselectPiece;
+        console.log("Here.");
       }
       break;
 
@@ -270,6 +312,7 @@ function checkAllowableMoves(square, piece) {
           return true;
         } else {
           deselectPiece();
+          console.log("Here.");
         }
       } else if (piece.classList[2] == "player2") {
         if (
@@ -286,6 +329,7 @@ function checkAllowableMoves(square, piece) {
           return true;
         } else {
           deselectPiece();
+          console.log("Here.");
         }
       }
       break;
@@ -336,11 +380,55 @@ function manUpgrades(piece) {
   console.log(piece);
 }
 
-// =========== //
 // Start Move from Capture System //
+function fromCapturedTiles() {
+  const capturedContainer = document.querySelector(
+    `#${playerID} >.capture-reserve`
+  );
+  capturedContainer.addEventListener("click", function (e) {
+    if (!selectedPiece) {
+      console.log(e.target);
+      if (e.target.classList.contains(playerTurn)) {
+        selectedPiece = e.target;
+        selectedPiece.classList.add("clickedtile");
+        console.log(selectedPiece);
+      }
+    }
+  });
+}
+
+// Placing Captured Tiles to Grid //
+function placingCaptured(selectedSquare) {
+  if (playerTurn == players[0]) {
+    if (
+      selectedSquare !== document.querySelector("#square4") &&
+      selectedSquare !== document.querySelector("#square8") &&
+      selectedSquare !== document.querySelector("#square12")
+    ) {
+      selectedPiece.classList.remove("capture-tiles");
+      selectedSquare.append(selectedPiece);
+      return true;
+    } else {
+      return false;
+    }
+  } else if (playerTurn == players[1]) {
+    if (
+      selectedSquare !== document.querySelector("#square1") &&
+      selectedSquare !== document.querySelector("#square5") &&
+      selectedSquare !== document.querySelector("#square9")
+    ) {
+      selectedPiece.classList.remove("capture-tiles");
+      selectedSquare.append(selectedPiece);
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
 
 // Image Overlay to CSS //
 // Color Overlay IF POSSIBLE //
 // Clickable Mouse? //
 // Randomiser on who starts the game //
 // Countdown Timer //
+// Begin Game & Restart Game Interface //
