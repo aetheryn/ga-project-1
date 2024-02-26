@@ -1,28 +1,54 @@
-#container {
-  padding: 2em 3em;
-  background-image: url("https://i.pngimg.me/thumb/f/720/comrawpixel7524860.jpg");
+body {
+  display: grid;
+  background-color: rgb(13, 10, 35);
+  /* background-image: url("https://img.freepik.com/free-photo/panoramic-view-sunset-night_23-2148933764.jpg"); */
   background-size: cover;
+  justify-content: center;
+  align-items: center;
 }
 
-.solid-black {
-  border: 1px solid black;
+#container {
+  padding: 2em 2em;
 }
 
 #game-title {
-  font-size: 3em;
+  font-size: 5em;
+  color: white;
+  font-family: "Micro 5", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-shadow: 0 0 1px #6462dd, 0 0 4px #6462dd, 0 0 8px #6462dd,
+    0 0 14px #6462dd, 0 0 25px #6462dd;
 }
 
 #start {
   font-size: 1rem;
+  border-color: #dc5098;
+  background-color: transparent;
+  color: white;
+  padding: 0.5rem 1rem;
+  font-family: "Electrolize", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  text-transform: uppercase;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #dc5098;
+  margin-top: 0rem;
+}
+
+#start:disabled {
+  background-color: transparent;
+  color: transparent;
+  border-color: transparent;
+  box-shadow: 0 0 0px;
 }
 
 h2 {
   font-size: 1rem;
-  margin-top: 5%;
-}
-
-button {
-  border-radius: 10px;
+  font-family: "Electrolize", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  margin-top: 0.3rem;
 }
 
 #player-one {
@@ -30,6 +56,10 @@ button {
   flex-direction: column;
   align-items: flex-end;
   justify-content: center;
+  font-family: "Electrolize", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 120%;
 }
 
 #player-two {
@@ -37,42 +67,50 @@ button {
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
+  font-family: "Electrolize", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+  letter-spacing: 120%;
 }
 
 .player-name {
-  font-size: 1.5rem;
+  font-size: 3em;
   font-weight: 700;
-}
-
-.player-one-text {
-  background-color: white;
-  border: 3px solid black;
-  border-radius: 10px;
-  padding: 0.3rem 0.3rem;
-  color: black;
-}
-
-.player-two-text {
-  background-color: black;
-  border: 3px solid white;
-  border-radius: 10px;
-  padding: 0.3rem 0.3rem;
+  font-family: "Micro 5", sans-serif;
+  font-style: normal;
   color: white;
+  text-transform: uppercase;
 }
 
-.your-turn {
+#player-one div.your-turn {
   font-size: 1rem;
   font-weight: 500;
-  color: red;
+  background-color: #e92288;
+  border: 4px outset #dc5098;
+  border-radius: 4px;
+  color: white;
   opacity: 0;
-  margin: 0.2rem 0.2rem;
+  padding: 5px;
+  text-transform: uppercase;
+}
+
+#player-two div.your-turn {
+  font-size: 1rem;
+  font-weight: 500;
+  background-color: #3431be;
+  border: 4px outset #6462dd;
+  border-radius: 4px;
+  color: white;
+  opacity: 0;
+  padding: 5px;
   text-transform: uppercase;
 }
 
 .capture-reserve-text {
   text-transform: uppercase;
   font-weight: 600;
-  margin-top: 2em;
+  margin-top: 1.5rem;
+  color: white;
 }
 
 .squares {
@@ -80,8 +118,7 @@ button {
   flex-wrap: wrap;
   height: 150px;
   width: 150px;
-  background-color: gray;
-  border: 1px solid black;
+  border: 3px solid white;
   align-items: center;
   justify-content: center;
 }
@@ -93,19 +130,23 @@ button {
   text-align: center;
   align-items: center;
   justify-content: center;
+  font-family: "Electrolize", sans-serif;
+  font-weight: 400;
+  font-stretch: 50%;
   text-transform: uppercase;
+  padding: 20px;
 }
 
 .player1 {
-  background-color: white;
-  border: black 5px solid;
+  background-color: #e92288;
+  border: 5px outset #dc5098;
   border-radius: 10%;
-  color: black;
+  color: white;
 }
 
 .player2 {
-  background-color: black;
-  border: white 5px solid;
+  background-color: #3431be;
+  border: 5px outset #6462dd;
   border-radius: 10%;
   color: white;
 }
@@ -125,11 +166,18 @@ button {
   width: 50px;
   border-width: 1.5px;
   font-size: 0.5rem;
+  font-weight: 300;
   align-items: center;
   justify-content: center;
   margin: 2px;
 }
 
-.clickedtile {
-  border-color: red;
+.clickedtile.player1 {
+  box-shadow: 0 0 5px 2px white, 0 0 5px 10px #dc5098;
+  font-weight: 700;
+}
+
+.clickedtile.player2 {
+  box-shadow: 0 0 5px 2px white, 0 0 5px 10px #6462dd;
+  font-weight: 700;
 }

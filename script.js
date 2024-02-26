@@ -29,13 +29,12 @@ let pieceColumn;
 let destinationRow;
 let destinationColumn;
 
-let playerTurn = players[0];
-
 document.querySelector("button").addEventListener("click", function (e) {
   setStartPlayer();
   clearBoard();
   clearCaptured();
   setPieces();
+  selectedPiece = null;
   document.querySelector("button").disabled = true;
   document.querySelector("h2").textContent = "";
 });
@@ -85,6 +84,7 @@ function setPieces() {
 }
 
 function setStartPlayer() {
+  playerTurn = players[0];
   document.querySelector("#player-one >.your-turn").style.opacity = 1;
 }
 
@@ -367,7 +367,7 @@ function hasGameEnded() {
   if (numberOfKings == 2) {
     return false;
   } else {
-    alert(`${playerTurn} has won the game!`);
+    // alert(`${playerTurn} has won the game!`);
     playerName = document.querySelector(
       `#${playerId} >.player-name`
     ).textContent;
