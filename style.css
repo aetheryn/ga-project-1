@@ -12,6 +12,19 @@
   font-size: 3em;
 }
 
+#start {
+  font-size: 1rem;
+}
+
+h2 {
+  font-size: 1rem;
+  margin-top: 5%;
+}
+
+button {
+  border-radius: 10px;
+}
+
 #player-one {
   display: flex;
   flex-direction: column;
@@ -53,9 +66,11 @@
   color: red;
   opacity: 0;
   margin: 0.2rem 0.2rem;
+  text-transform: uppercase;
 }
 
 .capture-reserve-text {
+  text-transform: uppercase;
   font-weight: 600;
   margin-top: 2em;
 }
@@ -78,6 +93,7 @@
   text-align: center;
   align-items: center;
   justify-content: center;
+  text-transform: uppercase;
 }
 
 .player1 {
@@ -107,8 +123,8 @@
   display: flex;
   height: 50px;
   width: 50px;
-  border-width: 2px;
-  font-size: 0.7rem;
+  border-width: 1.5px;
+  font-size: 0.5rem;
   align-items: center;
   justify-content: center;
   margin: 2px;

@@ -21,7 +21,24 @@ const grid = [
 
 const pieceNames = ["king", "man", "general", "minister", "feudal-lord"];
 const players = ["player1", "player2"];
+
+let playerId;
+let selectedPiece;
+let pieceRow;
+let pieceColumn;
+let destinationRow;
+let destinationColumn;
+
 let playerTurn = players[0];
+
+document.querySelector("button").addEventListener("click", function (e) {
+  setStartPlayer();
+  clearBoard();
+  clearCaptured();
+  setPieces();
+  document.querySelector("button").disabled = true;
+  document.querySelector("h2").textContent = "";
+});
 
 // Set starting pieces //
 function setPieces() {
@@ -67,13 +84,9 @@ function setPieces() {
   }
 }
 
-setPieces();
-let playerID;
-let selectedPiece;
-let pieceRow;
-let pieceColumn;
-let destinationRow;
-let destinationColumn;
+function setStartPlayer() {
+  document.querySelector("#player-one >.your-turn").style.opacity = 1;
+}
 
 // Setting Event Listener //
 
@@ -172,18 +185,18 @@ function switchPlayer() {
   console.log("Here.");
   console.log(`Next is ${playerTurn}'s turn.`);
 
-  //   Check Possibility of Next Player Starting from Captured Tile //
   if (playerTurn == players[0]) {
-    playerID = "player-one";
+    playerId = "player-one";
   } else {
-    playerID = "player-two";
+    playerId = "player-two";
   }
 
+  //   Check Possibility of Next Player Starting from Captured Tile //
   if (
-    document.querySelector(`#${playerID} >.capture-reserve`).hasChildNodes()
+    document.querySelector(`#${playerId} >.capture-reserve`).hasChildNodes()
   ) {
     fromCapturedTiles();
-    console.log(document.querySelector(`#${playerID} >.capture-reserve`));
+    console.log(document.querySelector(`#${playerId} >.capture-reserve`));
   }
 }
 
@@ -355,6 +368,13 @@ function hasGameEnded() {
     return false;
   } else {
     alert(`${playerTurn} has won the game!`);
+    playerName = document.querySelector(
+      `#${playerId} >.player-name`
+    ).textContent;
+    document.querySelector(
+      "h2"
+    ).textContent = `${playerName} has won the game! Restart game?`;
+    document.querySelector("button").disabled = false;
     return true;
   }
 }
@@ -383,7 +403,7 @@ function manUpgrades(piece) {
 // Start Move from Capture System //
 function fromCapturedTiles() {
   const capturedContainer = document.querySelector(
-    `#${playerID} >.capture-reserve`
+    `#${playerId} >.capture-reserve`
   );
   capturedContainer.addEventListener("click", function (e) {
     if (!selectedPiece) {
@@ -426,9 +446,42 @@ function placingCaptured(selectedSquare) {
   }
 }
 
+function clearCaptured() {
+  while (
+    document.querySelector(`#player-one >.capture-reserve`).hasChildNodes()
+  ) {
+    document
+      .querySelector(`#player-one >.capture-reserve`)
+      .removeChild(
+        document.querySelector(`#player-one >.capture-reserve`).firstChild
+      );
+  }
+  while (
+    document.querySelector(`#player-two >.capture-reserve`).hasChildNodes()
+  ) {
+    document
+      .querySelector(`#player-two >.capture-reserve`)
+      .removeChild(
+        document.querySelector(`#player-two >.capture-reserve`).firstChild
+      );
+  }
+}
+
+function clearBoard() {
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (grid[i][j].hasChildNodes()) {
+        grid[i][j].removeChild(grid[i][j].firstElementChild);
+      }
+    }
+  }
+}
+
 // Image Overlay to CSS //
 // Color Overlay IF POSSIBLE //
 // Clickable Mouse? //
 // Randomiser on who starts the game //
+
 // Countdown Timer //
+
 // Begin Game & Restart Game Interface //
