@@ -86,6 +86,7 @@ function setPieces() {
 function setStartPlayer() {
   playerTurn = players[0];
   document.querySelector("#player-one >.your-turn").style.opacity = 1;
+  document.querySelector("#player-two >.your-turn").style.opacity = 0;
 }
 
 // Setting Event Listener //

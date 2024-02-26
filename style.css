@@ -1,7 +1,6 @@
 body {
   display: grid;
   background-color: rgb(13, 10, 35);
-  /* background-image: url("https://img.freepik.com/free-photo/panoramic-view-sunset-night_23-2148933764.jpg"); */
   background-size: cover;
   justify-content: center;
   align-items: center;
@@ -133,6 +132,7 @@ h2 {
   font-family: "Electrolize", sans-serif;
   font-weight: 400;
   font-stretch: 50%;
+  font-size: 0.9rem;
   text-transform: uppercase;
   padding: 20px;
 }
@@ -165,7 +165,7 @@ h2 {
   height: 50px;
   width: 50px;
   border-width: 1.5px;
-  font-size: 0.5rem;
+  font-size: 0.4rem;
   font-weight: 300;
   align-items: center;
   justify-content: center;
@@ -180,4 +180,41 @@ h2 {
 .clickedtile.player2 {
   box-shadow: 0 0 5px 2px white, 0 0 5px 10px #6462dd;
   font-weight: 700;
+}
+
+/* Arrow PNGs for Each Tiles */
+
+.tiles.general {
+  background-image: url("./images/general.png");
+  background-size: 100%;
+}
+
+.tiles.minister {
+  background-image: url("./images/minister.png");
+  background-size: 100%;
+}
+
+.tiles.king {
+  background-image: url("./images/king.png");
+  background-size: 100%;
+}
+
+.tiles.man.player1 {
+  background-image: url("./images/man-p1.png");
+  background-size: 100%;
+}
+
+.tiles.man.player2 {
+  background-image: url("./images/man-p2.png");
+  background-size: 100%;
+}
+
+.tiles.feudal-lord.player1 {
+  background-image: url("./images/feudallord-p1.png");
+  background-size: 100%;
+}
+
+.tiles.feudal-lord.player2 {
+  background-image: url("./images/feudallord-p2.png");
+  background-size: 100%;
 }
