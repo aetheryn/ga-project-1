@@ -39,6 +39,46 @@ document.querySelector("button").addEventListener("click", function (e) {
   document.querySelector("h2").textContent = "";
 });
 
+// Reset for Player 1 to start the game //
+function setStartPlayer() {
+  playerTurn = players[0];
+  document.querySelector("#player-one >.your-turn").style.opacity = 1;
+  document.querySelector("#player-two >.your-turn").style.opacity = 0;
+}
+
+// Clear both players' capture reserves //
+function clearCaptured() {
+  while (
+    document.querySelector(`#player-one >.capture-reserve`).hasChildNodes()
+  ) {
+    document
+      .querySelector(`#player-one >.capture-reserve`)
+      .removeChild(
+        document.querySelector(`#player-one >.capture-reserve`).firstChild
+      );
+  }
+  while (
+    document.querySelector(`#player-two >.capture-reserve`).hasChildNodes()
+  ) {
+    document
+      .querySelector(`#player-two >.capture-reserve`)
+      .removeChild(
+        document.querySelector(`#player-two >.capture-reserve`).firstChild
+      );
+  }
+}
+
+// Clear board's tiles //
+function clearBoard() {
+  for (let i = 0; i < grid.length; i++) {
+    for (let j = 0; j < 4; j++) {
+      if (grid[i][j].hasChildNodes()) {
+        grid[i][j].removeChild(grid[i][j].firstElementChild);
+      }
+    }
+  }
+}
+
 // Set starting pieces //
 function setPieces() {
   for (let i = 0; i < pieceNames.length - 1; i++) {
@@ -83,21 +123,13 @@ function setPieces() {
   }
 }
 
-function setStartPlayer() {
-  playerTurn = players[0];
-  document.querySelector("#player-one >.your-turn").style.opacity = 1;
-  document.querySelector("#player-two >.your-turn").style.opacity = 0;
-}
-
-// Setting Event Listener //
-
+// Setting event listener for the game//
 const gridArray = document.querySelectorAll(".squares");
 gridArray.forEach((clickedSquare) => {
   clickedSquare.addEventListener("click", function (e) {
     if (!selectedPiece) {
       if (e.currentTarget.firstChild.classList.contains(playerTurn)) {
         selectPiece(e.currentTarget.firstChild);
-        console.log(selectedPiece);
       }
     } else {
       if (
@@ -110,7 +142,6 @@ gridArray.forEach((clickedSquare) => {
           }
         } else {
           deselectPiece();
-          console.log("Here.");
         }
       } else if (
         !selectedPiece.classList.contains("capture-tiles") &&
@@ -124,7 +155,6 @@ gridArray.forEach((clickedSquare) => {
           }
         }
       } else if (e.currentTarget.hasChildNodes()) {
-        console.log("restored tile");
         if (
           checkAllowableMoves(e.currentTarget, selectedPiece) &&
           e.currentTarget.firstChild.classList[2] !== playerTurn
@@ -137,18 +167,14 @@ gridArray.forEach((clickedSquare) => {
           }
         } else {
           deselectPiece();
-          console.log("Here.");
         }
       }
     }
   });
 });
 
-// Update Selected Piece //
+// Reading selected piece & its location on grid //
 function selectPiece(piece) {
-  console.log(piece.parentNode.id);
-  console.log(piece);
-
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < 4; j++) {
       if (grid[i][j] === document.querySelector(`#${piece.parentNode.id}`)) {
@@ -158,20 +184,16 @@ function selectPiece(piece) {
     }
   }
   selectedPiece = piece;
-  console.log(selectedPiece);
   selectedPiece.classList.add("clickedtile");
-  console.log(selectedPiece, pieceRow, pieceColumn);
 }
 
+// Deselect the selected piece //
 function deselectPiece() {
-  console.log(selectedPiece.classList);
   selectedPiece.classList.remove("clickedtile");
-  console.log(selectedPiece.classList);
   selectedPiece = null;
-  console.log("Selected piece: " + selectedPiece);
 }
 
-// Switch Player //
+// Switch player //
 function switchPlayer() {
   if (playerTurn == players[0]) {
     playerTurn = players[1];
@@ -183,7 +205,6 @@ function switchPlayer() {
     document.querySelector("#player-two >.your-turn").style.opacity = 0;
   }
   deselectPiece();
-  console.log("Here.");
   console.log(`Next is ${playerTurn}'s turn.`);
 
   if (playerTurn == players[0]) {
@@ -192,20 +213,19 @@ function switchPlayer() {
     playerId = "player-two";
   }
 
-  //   Check Possibility of Next Player Starting from Captured Tile //
+  //   Check possibility of next Player starting from captured reserves //
   if (
     document.querySelector(`#${playerId} >.capture-reserve`).hasChildNodes()
   ) {
     fromCapturedTiles();
-    console.log(document.querySelector(`#${playerId} >.capture-reserve`));
   }
 }
 
-// Capture Piece //
+// Capture opponent's piece //
 function capturePiece(square) {
   const capturedPiece = square.firstChild;
 
-  // Special for Feudal Lord //
+  // Special case for Feudal Lord //
   if (capturedPiece.classList.contains("feudal-lord")) {
     capturedPiece.classList.replace("feudal-lord", "man");
     capturedPiece.innerText = "man";
@@ -226,7 +246,7 @@ function capturePiece(square) {
   }
 }
 
-// Check Allowable Moves //
+// Check allowable moves //
 function checkAllowableMoves(square, piece) {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < 4; j++) {
@@ -237,8 +257,6 @@ function checkAllowableMoves(square, piece) {
     }
   }
 
-  console.log(piece.classList[1], square.id, destinationRow, destinationColumn);
-
   switch (piece.classList[1]) {
     case "general":
       if (
@@ -248,11 +266,9 @@ function checkAllowableMoves(square, piece) {
         (destinationColumn == pieceColumn &&
           (destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1))
       ) {
-        console.log("Move successful.");
         return true;
       } else {
         deselectPiece();
-        console.log("Here.");
       }
       break;
 
@@ -262,11 +278,9 @@ function checkAllowableMoves(square, piece) {
         (destinationColumn == pieceColumn + 1 ||
           destinationColumn == pieceColumn - 1)
       ) {
-        console.log("Move successful.");
         return true;
       } else {
         deselectPiece();
-        console.log("Here.");
       }
       break;
 
@@ -276,18 +290,15 @@ function checkAllowableMoves(square, piece) {
         destinationRow == pieceRow &&
         destinationColumn == pieceColumn + 1
       ) {
-        console.log("Move successful.");
         return true;
       } else if (
         piece.classList[2] == "player2" &&
         destinationRow == pieceRow &&
         destinationColumn == pieceColumn - 1
       ) {
-        console.log("Move successful.");
         return true;
       } else {
         deselectPiece();
-        console.log("Here.");
       }
       break;
 
@@ -302,11 +313,9 @@ function checkAllowableMoves(square, piece) {
           (destinationColumn == pieceColumn + 1 ||
             destinationColumn == pieceColumn - 1))
       ) {
-        console.log("Move successful.");
         return true;
       } else {
         deselectPiece;
-        console.log("Here.");
       }
       break;
 
@@ -322,11 +331,9 @@ function checkAllowableMoves(square, piece) {
           ((destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1) &&
             destinationColumn == pieceColumn + 1)
         ) {
-          console.log("Move successful.");
           return true;
         } else {
           deselectPiece();
-          console.log("Here.");
         }
       } else if (piece.classList[2] == "player2") {
         if (
@@ -339,11 +346,9 @@ function checkAllowableMoves(square, piece) {
           ((destinationRow == pieceRow + 1 || destinationRow == pieceRow - 1) &&
             destinationColumn == pieceColumn - 1)
         ) {
-          console.log("Move successful.");
           return true;
         } else {
           deselectPiece();
-          console.log("Here.");
         }
       }
       break;
@@ -353,7 +358,7 @@ function checkAllowableMoves(square, piece) {
   }
 }
 
-// Check whether Game has Ended //
+// Check whether game has ended //
 function hasGameEnded() {
   let numberOfKings = 0;
   for (let i = 0; i < grid.length; i++) {
@@ -380,7 +385,7 @@ function hasGameEnded() {
   }
 }
 
-// Check Whether Man Reaches Opponent's Territory //
+// Check whether man reaches opponent's territory //
 function isManInTerr() {
   for (let i = 0; i < grid.length; i++) {
     if (
@@ -394,31 +399,28 @@ function isManInTerr() {
   }
 }
 
-// Man Upgrades to Feudal Lord //
+// Man upgrades to Feudal Lord //
 function manUpgrades(piece) {
   piece.classList.replace("man", "feudal-lord");
   piece.innerText = "feudal lord";
-  console.log(piece);
 }
 
-// Start Move from Capture System //
+// Select tile from capture reserves //
 function fromCapturedTiles() {
   const capturedContainer = document.querySelector(
     `#${playerId} >.capture-reserve`
   );
   capturedContainer.addEventListener("click", function (e) {
     if (!selectedPiece) {
-      console.log(e.target);
       if (e.target.classList.contains(playerTurn)) {
         selectedPiece = e.target;
         selectedPiece.classList.add("clickedtile");
-        console.log(selectedPiece);
       }
     }
   });
 }
 
-// Placing Captured Tiles to Grid //
+// Place selected tile to grid, not in opponent's territory //
 function placingCaptured(selectedSquare) {
   if (playerTurn == players[0]) {
     if (
@@ -446,43 +448,3 @@ function placingCaptured(selectedSquare) {
     }
   }
 }
-
-function clearCaptured() {
-  while (
-    document.querySelector(`#player-one >.capture-reserve`).hasChildNodes()
-  ) {
-    document
-      .querySelector(`#player-one >.capture-reserve`)
-      .removeChild(
-        document.querySelector(`#player-one >.capture-reserve`).firstChild
-      );
-  }
-  while (
-    document.querySelector(`#player-two >.capture-reserve`).hasChildNodes()
-  ) {
-    document
-      .querySelector(`#player-two >.capture-reserve`)
-      .removeChild(
-        document.querySelector(`#player-two >.capture-reserve`).firstChild
-      );
-  }
-}
-
-function clearBoard() {
-  for (let i = 0; i < grid.length; i++) {
-    for (let j = 0; j < 4; j++) {
-      if (grid[i][j].hasChildNodes()) {
-        grid[i][j].removeChild(grid[i][j].firstElementChild);
-      }
-    }
-  }
-}
-
-// Image Overlay to CSS //
-// Color Overlay IF POSSIBLE //
-// Clickable Mouse? //
-// Randomiser on who starts the game //
-
-// Countdown Timer //
-
-// Begin Game & Restart Game Interface //
