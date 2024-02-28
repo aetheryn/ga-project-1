@@ -123,7 +123,7 @@ function setPieces() {
   }
 }
 
-// Setting event listener for the game//
+// Grid events for the game//
 const gridArray = document.querySelectorAll(".squares");
 gridArray.forEach((clickedSquare) => {
   clickedSquare.addEventListener("click", function (e) {
@@ -173,7 +173,7 @@ gridArray.forEach((clickedSquare) => {
   });
 });
 
-// Reading selected piece & its location on grid //
+// Read selected piece & its location on grid //
 function selectPiece(piece) {
   for (let i = 0; i < grid.length; i++) {
     for (let j = 0; j < 4; j++) {
@@ -207,13 +207,13 @@ function switchPlayer() {
   deselectPiece();
   console.log(`Next is ${playerTurn}'s turn.`);
 
+  //   Check possibility of next Player starting from captured reserves //
   if (playerTurn == players[0]) {
     playerId = "player-one";
   } else {
     playerId = "player-two";
   }
 
-  //   Check possibility of next Player starting from captured reserves //
   if (
     document.querySelector(`#${playerId} >.capture-reserve`).hasChildNodes()
   ) {
@@ -315,7 +315,7 @@ function checkAllowableMoves(square, piece) {
       ) {
         return true;
       } else {
-        deselectPiece;
+        deselectPiece();
       }
       break;
 
