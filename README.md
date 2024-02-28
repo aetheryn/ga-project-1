@@ -39,7 +39,7 @@ Vanilla JavaScript, HTML, CSS
 | King             |     ![King for Player 1](./images/king1.png)     |     ![King for Player 2](./images/king2.png)     |
 | Feudal Lord [^1] |  ![Feudal Lord for Player 1](./images/fl1.png)   |  ![Feudal Lord for Player 2](./images/fl2.png)   |
 
-[^1] "Feudal Lord" is an upgraded version of a "Man", which happens when a player’s "Man" piece reaches their **opponent’s territory.**
+[^1]: "Feudal Lord" is an upgraded version of a "Man", which happens when a player’s "Man" piece reaches their **opponent’s territory.**
 
 ### Gameplay Rules
 
@@ -50,6 +50,8 @@ Vanilla JavaScript, HTML, CSS
   ==In the case that a "Feudal Lord" is captured, it will reset its abilities and return to a normal "Man".==
 - Placing a captured piece back on the grid will consume one whole turn. Placing them directly on your opponent’s territory is not allowed.
 - Have fun playing!
+
+The game can be found [here](https://aetheryn.github.io/ga-project-1/).
 
 ## Next Steps
 
@@ -67,7 +69,7 @@ Planned future enhancements:
 - [Stack Overflow](http://stackoverflow.com)
 - [Unused CSS](http://unused-css.com)
 - [JS Fiddle](http://jsfiddle.net)
-- [W3docs] (http://w3docs.com)
+- [W3docs](http://w3docs.com)
 - [CSS-Tricks](http://css-tricks.com)
 - [freeCodeCamp](http://freecodecamp.org)
 - [Google Fonts](http://fonts-google.com)
