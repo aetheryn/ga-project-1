@@ -51,7 +51,7 @@ Vanilla JavaScript, HTML, CSS
 - Placing a captured piece back on the grid will consume one whole turn. Placing them directly on your opponent’s territory is not allowed.
 - Have fun playing!
 
-The game can be found [here](https://aetheryn.github.io/ga-project-1/).
+The game can be accessed [here](https://aetheryn.github.io/ga-project-1/).
 
 ## Next Steps
 
